@@ -11,10 +11,10 @@ https://people.csail.mit.edu/celiu/SIFTflow/
 import numpy as np
 from scipy.interpolate import interp2d
 from imageio import imread, imwrite
-from readFlowFile import readFlowFile
+from flowio import readFlowFile
 
 
-def warpImage(im, vx, vy):
+def warpImage(im, vx, vy, cast_uint8=True):
     '''
     function to warp images with different dimensions
     '''
@@ -42,14 +42,18 @@ def warpImage(im, vx, vy):
         warpI2[:, :, i] = foo
 
     mask = 1 - mask
+
+    if cast_uint8:
+        warpI2 = warpI2.astype(np.uint8)
+
     return warpI2, mask
 
 
-def main(fname_image, fname_flow):
+def main(fname_image, fname_flow, fname_output='warped.png'):
     im2 = imread(fname_image)
     flow = readFlowFile(fname_flow)
     im_warped, _ = warpImage(im2, flow[:, :, 0], flow[:, :, 1])
-    imwrite('warped.png', im_warped)
+    imwrite(fname_output, im_warped)
 
 
 if __name__ == '__main__':

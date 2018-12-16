@@ -44,10 +44,10 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 import numpy as np
 from imageio import imwrite
 from computeColor import computeColor
-from readFlowFile import readFlowFile
+from flowio import readFlowFile
 
 
-def flowToColor(flow, maxflow=None):
+def flowToColor(flow, maxflow=None, verbose=False):
     '''
     args
         flow (numpy array) height x width x 2
@@ -87,8 +87,9 @@ def flowToColor(flow, maxflow=None):
     rad = np.sqrt(u ** 2 + v ** 2)
     maxrad = max(maxrad, rad.max())
 
-    print('max flow: %.4f flow range: u = %.3f .. %.3f; v = %.3f .. %.3f\n' %
-          (maxrad, minu, maxu, minv, maxv))
+    if verbose:
+        print('max flow: %.4f flow range: u = %.3f .. %.3f; v = %.3f .. %.3f\n' %
+              (maxrad, minu, maxu, minv, maxv))
 
     if maxflow is not None:
         if maxflow > 0:

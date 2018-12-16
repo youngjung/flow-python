@@ -41,8 +41,7 @@ test color pattern of Daniel's c++ code
 
 import numpy as np
 from computeColor import computeColor
-from readFlowFile import readFlowFile
-from writeFlowFile import writeFlowFile
+from flowio import readFlowFile, writeFlowFile
 from imageio import imwrite
 
 

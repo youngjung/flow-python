@@ -29,11 +29,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import numpy as np
 from imageio import imwrite, imread
-from readFlowFile import readFlowFile
+from flowio import readFlowFile
 from flowToColor import flowToColor
 
 
-def createOverlayImage(image, visImage):
+def createOverlayImage(image, visImage, visratio=0.7, cast_uint8=True):
     '''
     Create an overlay of the input image and visualization of the
     correspondences
@@ -54,17 +54,20 @@ def createOverlayImage(image, visImage):
     image = np.tile(image.reshape(1, height, width), (3, 1, 1)).transpose(1, 2, 0)
 
     # Add images for overlay
-    overlayImage = maxVis * image * 0.2 + visImage * 0.8
-    # overlayImage = cast(overlayImage, class(visImage))
+    overlayImage = maxVis * image * (1 - visratio) + visImage * visratio
+
+    if cast_uint8:
+        overlayImage = overlayImage.astype(np.uint8)
+
     return overlayImage
 
 
-def main(fname_image, fname_flow):
+def main(fname_image, fname_flow, fname_output='overlay.png', verbose=False):
     im1 = imread(fname_image)
     flow = readFlowFile(fname_flow)
-    im_flow = flowToColor(flow)
+    im_flow = flowToColor(flow, verbose)
     im_overlay = createOverlayImage(im1, im_flow)
-    imwrite('overlay.png', im_overlay)
+    imwrite(fname_output, im_overlay)
 
 
 if __name__ == '__main__':

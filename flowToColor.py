@@ -107,10 +107,10 @@ def flowToColor(flow, maxflow=None, verbose=False):
     return img
 
 
-def main(fname_flow, maxflow=None):
+def main(fname_flow, fname_output='flow.png', maxflow=None):
     flow = readFlowFile(fname_flow)
     img_result = flowToColor(flow, maxflow)
-    imwrite('flow.png', img_result)
+    imwrite(fname_output, img_result)
 
 
 if __name__ == '__main__':

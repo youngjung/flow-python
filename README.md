@@ -6,6 +6,8 @@
 
 ## read/write .flo file
 ``` python
+import sys
+sys.path.append('flow-python')
 from flowio import readFlowFile, writeFlowFile
 
 flow = readFlowFile(fname_input)
